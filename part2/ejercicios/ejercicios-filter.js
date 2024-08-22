@@ -102,9 +102,13 @@ let transacciones = [
   { monto: 100, tipo: "gasto", fecha: "2024-06-20" },
 ];
 
-transacciones.filter((transaccion) => {
-  return transaccion.fecha.getMounth.substring(5) ==
-    new Date("2024/08/14").substring(5) + 1 && transaccion.tipo == "gasto"
-    ? transaccion.monto
-    : "";
+let fechaActual = new Date("2024-08-19");
+let ultimoMes = new Date(fechaActual);
+ultimoMes.setMonth(ultimoMes.getMonth() - 1);
+console.log(ultimoMes);
+let gastosUltimoMes = transacciones.filter((transaccion) => {
+  let fechaTransaccion = new Date(transaccion.fecha);
+  return transaccion.tipo === "gasto" && fechaTransaccion >= ultimoMes;
 });
+
+let montos = gastosUltimoMes.map((transaccion) => transaccion.monto);
