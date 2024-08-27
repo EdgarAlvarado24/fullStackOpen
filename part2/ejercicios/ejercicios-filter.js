@@ -3,12 +3,12 @@
 
 let numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-let par = [];
-for (let i = 0; i < numeros.length - 1; i++) {
-  if (numeros[i] % 2 == 0) {
-    par.push(numeros[i]);
-  }
-}
+// let par = [];
+// for (let i = 0; i < numeros.length - 1; i++) {
+//   if (numeros[i] % 2 == 0) {
+//     par.push(numeros[i]);
+//   }
+// }
 
 numeros.filter((number) => {
   return number % 2 == 0 ? [].push(number) : "";
@@ -19,12 +19,12 @@ Tienes un array de palabras. Usa filter para obtener un nuevo array con palabras
 
 let palabras = ["manzana", "pera", "banana", "kiwi", "durazno", "uva"];
 
-let palabrasConCincoLetras = [];
-for (let i = 0; i < palabras.length - 1; i++) {
-  if (palabras[i].length >= 5) {
-    palabrasConCincoLetras.push(palabras[i]);
-  }
-}
+// let palabrasConCincoLetras = [];
+// for (let i = 0; i < palabras.length - 1; i++) {
+//   if (palabras[i].length >= 5) {
+//     palabrasConCincoLetras.push(palabras[i]);
+//   }
+// }
 
 palabras.filter((palabra) => {
   return palabra.length >= 5 ? [].push(palabra) : "";
