@@ -3,12 +3,12 @@
 
 let numeros = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-let par = [];
-for (let i = 0; i < numeros.length - 1; i++) {
-  if (numeros[i] % 2 == 0) {
-    par.push(numeros[i]);
-  }
-}
+// let par = [];
+// for (let i = 0; i < numeros.length - 1; i++) {
+//   if (numeros[i] % 2 == 0) {
+//     par.push(numeros[i]);
+//   }
+// }
 
 numeros.filter((number) => {
   return number % 2 == 0 ? [].push(number) : "";
@@ -19,12 +19,12 @@ Tienes un array de palabras. Usa filter para obtener un nuevo array con palabras
 
 let palabras = ["manzana", "pera", "banana", "kiwi", "durazno", "uva"];
 
-let palabrasConCincoLetras = [];
-for (let i = 0; i < palabras.length - 1; i++) {
-  if (palabras[i].length >= 5) {
-    palabrasConCincoLetras.push(palabras[i]);
-  }
-}
+// let palabrasConCincoLetras = [];
+// for (let i = 0; i < palabras.length - 1; i++) {
+//   if (palabras[i].length >= 5) {
+//     palabrasConCincoLetras.push(palabras[i]);
+//   }
+// }
 
 palabras.filter((palabra) => {
   return palabra.length >= 5 ? [].push(palabra) : "";
@@ -102,9 +102,13 @@ let transacciones = [
   { monto: 100, tipo: "gasto", fecha: "2024-06-20" },
 ];
 
-transacciones.filter((transaccion) => {
-  return transaccion.fecha.getMounth.substring(5) ==
-    new Date("2024/08/14").substring(5) + 1 && transaccion.tipo == "gasto"
-    ? transaccion.monto
-    : "";
+let fechaActual = new Date("2024-08-19");
+let ultimoMes = new Date(fechaActual);
+ultimoMes.setMonth(ultimoMes.getMonth() - 1);
+console.log(ultimoMes);
+let gastosUltimoMes = transacciones.filter((transaccion) => {
+  let fechaTransaccion = new Date(transaccion.fecha);
+  return transaccion.tipo === "gasto" && fechaTransaccion >= ultimoMes;
 });
+
+let montos = gastosUltimoMes.map((transaccion) => transaccion.monto);
