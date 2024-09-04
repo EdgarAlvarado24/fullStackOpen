@@ -17,6 +17,26 @@ for (let i = 0; i < orders.length; i++) {
 
 var totalAmount = orders.reduce((sum, order)=>sum + order.amonut,0)//Esta funcion esta devolviendo el resultado y encapsulandola en la variable totalAmunt, si la corres en el navegador tal cual no te retornara nada pero existiar la variable totalAmount en la consola con el valor final del array de orders
 
+/*Ejercicio 2: Crear un objeto que cuente las letras
+Dado un array de palabras, usa reduce para crear un objeto que cuente cuántas veces aparece cada letra (sin importar mayúsculas o minúsculas).*/
+
+let palabras = ["Hola", "mundo"];
+
+
+let conteoLetras = palabras
+    .join("") // Une todas las palabras en un solo string: "Holamundo"
+    .toLowerCase() // Convierte el string a minúsculas: "holamundo"
+    .split("") // Divide el string en un array de letras: ["h", "o", "l", "a", "m", "u", "n", "d", "o"]
+    .reduce((acumulador, letra) => {
+        if (acumulador[letra]) {
+            acumulador[letra]++;
+        } else {
+            acumulador[letra] = 1;
+        }
+        return acumulador;
+    }, {}); // Inicia con un objeto vacío {}
+
+//Resuelto por la IA
 
 /*Ejemplo 3: Aplanar un array de arrays (Flatten)
 Supongamos que tienes un array de arrays, y quieres convertirlo en un solo array que contenga todos los elementos:*/
@@ -48,7 +68,6 @@ console.log(conteoFrutas);
 // { manzana: 3, naranja: 2, pera: 1 }
 
 /*Ejercicio 5: Calcular la suma de los cuadrados
-
 Dado un array de números, utiliza reduce para calcular la suma de los cuadrados de cada número.*/
 
 let numeros = [2, 3, 4];
@@ -56,29 +75,9 @@ let numeros = [2, 3, 4];
 let numeroCuadrados = numeros.reduce((acc, current)=> acc + current * current,0)
 
 
-/*Ejercicio 2: Crear un objeto que cuente las letras
-Dado un array de palabras, usa reduce para crear un objeto que cuente cuántas veces aparece cada letra (sin importar mayúsculas o minúsculas).*/
-
-let palabras = ["Hola", "mundo"];
-
-
-let conteoLetras = palabras
-    .join("") // Une todas las palabras en un solo string: "Holamundo"
-    .toLowerCase() // Convierte el string a minúsculas: "holamundo"
-    .split("") // Divide el string en un array de letras: ["h", "o", "l", "a", "m", "u", "n", "d", "o"]
-    .reduce((acumulador, letra) => {
-        if (acumulador[letra]) {
-            acumulador[letra]++;
-        } else {
-            acumulador[letra] = 1;
-        }
-        return acumulador;
-    }, {}); // Inicia con un objeto vacío {}
-
-//Resuelto por la IA
-
-/*Ejercicio 3: Agrupar elementos por propiedad
+/*Ejercicio 6: Agrupar elementos por propiedad
 Tienes un array de objetos que representan productos con una propiedad categoria. Usa reduce para agrupar los productos por categoria.*/
+
 let productos = [
     { nombre: "Camiseta", categoria: "Ropa" },
     { nombre: "Pantalón", categoria: "Ropa" },
@@ -99,7 +98,7 @@ let productos = [
   ]
 }*/
 
-/*Ejercicio 4: Encontrar el máximo en un array de objetos
+/*Ejercicio 7: Encontrar el máximo en un array de objetos
 Tienes un array de objetos que representan estudiantes, cada uno con una propiedad nombre y calificacion. Usa reduce para encontrar el estudiante con la calificación más alta.*/
 
 let estudiantes = [
@@ -119,7 +118,7 @@ let mayorNota = estudiantes.reduce((acc, el) => {
 }, 0);
 console.log("mayorNota", mayorNota);
 
-/*Ejercicio 5: Aplanar un array de objetos
+/*Ejercicio 8: Aplanar un array de objetos
 Tienes un array de objetos que contienen un array de sub-elementos. Usa reduce para aplanar todos los sub-elementos en un solo array.
 */
 
@@ -132,7 +131,7 @@ let datos = [
 let ordenados = datos.reduce((acc, el) => acc.concat(el.valores), []);
 console.log(ordenados);
 
-/*Ejercicio 6: Transformar un array de objetos a un objeto clave-valor
+/*Ejercicio 9: Transformar un array de objetos a un objeto clave-valor
 Dado un array de objetos que representan configuraciones, usa reduce para transformarlo en un solo objeto donde las claves sean los nombres y los valores sean las valores correspondientes.*/
 
 let configuraciones = [
