@@ -9,6 +9,7 @@ const App = () => {
   ])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const [filterNames, setFilterNames] = useState([])
 
   const addPerson = (event) =>{
     event.preventDefault()
@@ -16,6 +17,7 @@ const App = () => {
     const personObject = {
       name: newName,
       number: newNumber,
+      id:0
     }
 
     const personsExist = (person) => person.name === newName
@@ -31,38 +33,47 @@ const App = () => {
 
   const handlePersonChange = (event) =>{
     // console.log(event.target.value)
-         
     setNewName(event.target.value)
-
   }
 
   const handlNumberChange = (event) =>{
     setNewNumber(event.target.value)
   }
 
+  const handleFilterChange = (event) =>{
+    setFilterNames(event.target.value)
+  }
+
+  let filterList = persons.filter(person => person.name.toLowerCase().includes(filterNames) ? <h3>{person.name}</h3> : '')
+  // console.log(filterList)
+
+
   return (
+  <div>
+    <h2>Phonebook</h2>
     <div>
-      <h2>Phonebook</h2>
-      <form onSubmit={addPerson}>
-        <div>
-          name: <input  value={newName} onChange={handlePersonChange}/>
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handlNumberChange}/>
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
+      filter shown with <input value={filterNames} onChange={handleFilterChange}/>
+    </div>
+    <form onSubmit={addPerson}>
       <div>
-          {
-            persons.map((person)=> 
-              <h3 key={person.id}>
-                {person.name} {person.number}
-              </h3>
-          )}
+        name: <input  value={newName} onChange={handlePersonChange}/>
       </div>
+      <div>
+        number: <input value={newNumber} onChange={handlNumberChange}/>
+      </div>
+      <div>
+        <button type="submit">add</button>
+      </div>
+    </form>
+    <h2>Numbers</h2>
+    <div>
+        {
+          filterList.map((filter)=> 
+            <h3 key={filter.id}>
+              {filter.name} {filter.number}
+            </h3>
+        )}
+    </div>
     </div>
   )
 }
