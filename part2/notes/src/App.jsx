@@ -1,6 +1,6 @@
-import { useState } from 'react' // Importamos el hook useState de React para manejar el estado de los componentes.
+import { useState, useEffect } from 'react' // Importamos el hook useState de React para manejar el estado de los componentes.
+import axios from 'axios'
 import Note from './components/Note' // Importamos el componente Note que se encuentra en la ruta especificada.
-
 
 // Definimos el componente principal App como una función flecha.
 const App = () => {
@@ -15,6 +15,17 @@ const App = () => {
   // Creamos un estado llamado 'showAll' para controlar si se muestran todas las notas o solo las importantes.
   // Inicializamos 'showAll' como true, lo que significa que se mostrarán todas las notas al principio.
   const [showAll, setShowAll] = useState(true) 
+
+  useEffect(()=>{
+    console.log('effect')
+    axios
+      .get('http://localhost:3001/notes')
+      .then(response =>{
+        console.log('promise fulfilled')
+        setNotes(response.data)
+      })
+  }, [])
+  console.log('render', notes.length, 'notes')
 
   // Función que se ejecuta al enviar el formulario para agregar una nueva nota.
   const addNote = (event) => {
