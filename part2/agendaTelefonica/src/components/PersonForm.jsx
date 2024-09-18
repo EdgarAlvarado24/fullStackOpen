@@ -1,13 +1,18 @@
+import axios from 'axios'
+
 const PersonForm = ({newName, setNewName, newNumber, setNewNumber, persons, setPersons}) =>{
 
     const addPerson = (event) =>{
         event.preventDefault()
     
         const personObject = {
-          name: newName,
           number: newNumber,
-          id:0
+          name: newName
         }
+
+        axios
+          .post('http://localhost:3001/persons',personObject)
+          .then(response => console.log(response))
     
         const personsExist = (person) => person.name === newName
         
@@ -18,6 +23,7 @@ const PersonForm = ({newName, setNewName, newNumber, setNewNumber, persons, setP
         }
     
         setNewName('')
+        setNewNumber('')
     }
 
     const handlePersonChange = (event) =>{
