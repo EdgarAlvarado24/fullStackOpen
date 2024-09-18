@@ -1,9 +1,16 @@
 import { useState, useEffect } from 'react' // Importamos el hook useState de React para manejar el estado de los componentes.
-import axios from 'axios'
-import Note from './components/Note' // Importamos el componente Note que se encuentra en la ruta especificada.
+import Note from './components/Note' // Importamos el componente Note que se encuentra en la ruta especificada.import noteService from './services/notes'
+import noteService from './services/notes'
 
 // Definimos el componente principal App como una función flecha.
 const App = () => {
+  useEffect(()=>{
+    noteService
+    .getAll()
+    .then(initialNotes =>{
+      setNotes(initialNotes)
+    })
+  },[])
   // Usamos el hook useState para crear un estado llamado 'notes' que almacenará un array de notas.
   // Inicializamos 'notes' como un array vacío.
   const [notes, setNotes] = useState([]) 
@@ -17,40 +24,46 @@ const App = () => {
   const [showAll, setShowAll] = useState(true) 
 
   useEffect(()=>{
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/notes')
-      .then(response =>{
-        console.log('promise fulfilled')
-        setNotes(response.data)
-      })
+
   }, [])
-  console.log('render', notes.length, 'notes')
+
+  const toggleImportanceOf = (id) =>{
+    const note = notes.find(n => n.id === id)
+    const changedNote = {...note, important: !note.important}
+
+    noteService
+    .update(id, changedNote)
+    .then(returnedNote =>{
+      setNotes(notes.map(note => note.id !== id ? note : returnedNote))
+    })
+    .catch(() => {
+      alert(`the note ${note.content} was alredy deleted from serever`)
+      setNotes(notes.filter(n => n.id !== id))
+    })
+      
+  }
 
   // Función que se ejecuta al enviar el formulario para agregar una nueva nota.
-  const addNote = (event) => {
+  const addNote = event => {
     // Prevenimos el comportamiento por defecto del formulario que es recargar la página.
     event.preventDefault() 
 
     // Creamos un objeto 'noteObject' que representa la nueva nota con su contenido, importancia e id.
     const noteObject = {
       content: newNote, // El contenido de la nota se toma del estado 'newNote'.
-      important: Math.random() < 0.5, // La importancia se genera aleatoriamente.
-      id: notes.length + 1, // El id se genera automáticamente incrementando el tamaño del array 'notes'.
+      important: Math.random() < 0.5 // La importancia se genera aleatoriamente.
     }
-  
-    // Actualizamos el estado 'notes' concatenando el nuevo objeto 'noteObject' al array existente.
-    setNotes(notes.concat(noteObject)) 
-
-    // Limpiamos el input de nueva nota estableciendo el estado 'newNote' como un string vacío.
-    setNewNote('') 
+    
+    noteService
+    .create(noteObject)
+    .then(returnedNote => {
+      setNotes(notes.concat(returnedNote))
+      setNewNote('') 
+    })
   }
 
   // Función que se ejecuta cada vez que el valor del input de nueva nota cambia.
   const handleNoteChange = (event) => {
-    // Imprimimos en consola el nuevo valor del input.
-    console.log(event.target.value) 
-
     // Actualizamos el estado 'newNote' con el nuevo valor del input.
     setNewNote(event.target.value) 
   }
@@ -75,7 +88,11 @@ const App = () => {
       <ul>
         {/* Mapeamos el array 'notesToShow' para renderizar un componente Note por cada nota */}
         {notesToShow.map(note => 
-          <Note key={note.id} note={note} /> 
+          <Note 
+          key={note.id} 
+          note={note} 
+          toggleImportance={() =>toggleImportanceOf(note.id)}
+          /> 
         )}
       </ul>
 
