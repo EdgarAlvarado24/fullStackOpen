@@ -1,4 +1,4 @@
-import axios from 'axios'
+import personsServices from '../services/persons'
 
 const PersonForm = ({newName, setNewName, newNumber, setNewNumber, persons, setPersons}) =>{
 
@@ -10,9 +10,14 @@ const PersonForm = ({newName, setNewName, newNumber, setNewNumber, persons, setP
           name: newName
         }
 
-        axios
-          .post('http://localhost:3001/persons',personObject)
-          .then(response => console.log(response))
+        personsServices
+          .create(personObject)
+          .then(returnedPerson =>{
+            setPersons(persons.concat(returnedPerson))
+            setNewName('')
+            setNewNumber('')
+          })
+
     
         const personsExist = (person) => person.name === newName
         
