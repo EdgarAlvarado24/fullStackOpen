@@ -10,25 +10,29 @@ const PersonForm = ({newName, setNewName, newNumber, setNewNumber, persons, setP
           name: newName
         }
 
-        personsServices
+        const personsExist = persons.some((person) => person.name === newName)
+        console.log('personsDontExist',!personsExist)
+        if (!personsExist){
+          setPersons(persons.concat(personObject))
+
+          personsServices
           .create(personObject)
           .then(returnedPerson =>{
             setPersons(persons.concat(returnedPerson))
-            setNewName('')
-            setNewNumber('')
           })
-
-    
-        const personsExist = (person) => person.name === newName
-        
-        if (persons.some(personsExist)){
-          alert(`${newName} is already added to phonebook`)
+          
         }else{
-          setPersons(persons.concat(personObject))
+          // alert(`${newName} is already added to phonebook`)
+          if (window.confirm(`${persons.find(person=> person.name === newName).name } ya existe, quieres cambiar el numero?`))
+          personsServices
+          .update(persons.find(person => person.name === newName).id, personObject)
+          .then(returnedPerson =>{
+            setPersons(persons.map(person => person.name != newName ? person : returnedPerson))
+          })
+          
         }
-    
         setNewName('')
-        setNewNumber('')
+        setNewNumber('') 
     }
 
     const handlePersonChange = (event) =>{

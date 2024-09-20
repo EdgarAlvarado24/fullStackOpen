@@ -3,19 +3,22 @@ import personsServices from '../services/persons'
 const Persons = ({persons, filterNames, setPersons}) =>{
 
   let personsFilterList = persons.filter(person => person.name.toLowerCase().includes(filterNames) ? <h3>{person.name}</h3> : '')
+  // console.log(filterNames)
+  // persons.filter(person => console.log(person.id))
 
-  // persons.filter(person => console.log(person.name))
-
-  const deletePerson = (id) =>{
-
+  const deletePerson = (id) => {
+    if (window.confirm(`Delete ${persons.find(p => p.id === id).name}?`)) {
       personsServices
-      .remove(id)
-      .then(returnedPerson => {
-        setPersons(persons.map(person => 
-          person.id !== id ? person: returnedPerson))
-      })
-      
-  }
+        .remove(id)
+        .then(() => {
+          setPersons(persons.filter(person => person.id !== id));
+        })
+        .catch(() => {
+          alert(`The person was already deleted from the server.`);
+          setPersons(persons.filter(n => n.id !== id));
+        });
+    }
+  };
   
   return(
         <div>
