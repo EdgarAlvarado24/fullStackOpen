@@ -1,6 +1,6 @@
 import personsServices from '../services/persons'
 
-const PersonForm = ({newName, setNewName, newNumber, setNewNumber, persons, setPersons}) =>{
+const PersonForm = ({newName, setNewName, newNumber, setNewNumber, persons, setPersons, setNewMessage}) =>{
 
     const addPerson = (event) =>{
         event.preventDefault()
@@ -20,6 +20,15 @@ const PersonForm = ({newName, setNewName, newNumber, setNewNumber, persons, setP
           .then(returnedPerson =>{
             setPersons(persons.concat(returnedPerson))
           })
+          .finally( ()=>{
+              setNewMessage(
+                `agregado ${newName}`
+              )
+            },
+            setTimeout(()=>{
+                  setNewMessage(null)
+              },3000)
+          )
           
         }else{
           // alert(`${newName} is already added to phonebook`)

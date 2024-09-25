@@ -1,6 +1,21 @@
 import { useState, useEffect } from 'react' // Importamos el hook useState de React para manejar el estado de los componentes.
 import Note from './components/Note' // Importamos el componente Note que se encuentra en la ruta especificada.import noteService from './services/notes'
 import noteService from './services/notes'
+import Notification from './components/Notification'
+
+const Footer = () => {
+  const footerStyle = {
+    color: 'green',
+    fontStyle: 'italic',
+    fontSize: 16
+  }
+  return (
+    <div style={footerStyle}>
+      <br />
+      <em>Note app, Department of Computer Science, University of Helsinki 2024</em>
+    </div>
+  )
+}
 
 // Definimos el componente principal App como una función flecha.
 const App = () => {
@@ -14,14 +29,13 @@ const App = () => {
   // Usamos el hook useState para crear un estado llamado 'notes' que almacenará un array de notas.
   // Inicializamos 'notes' como un array vacío.
   const [notes, setNotes] = useState([]) 
-
   // Creamos un estado llamado 'newNote' para almacenar el valor del input de nueva nota.
   // Inicializamos 'newNote' como un string vacío.
   const [newNote, setNewNote] = useState('') 
-
   // Creamos un estado llamado 'showAll' para controlar si se muestran todas las notas o solo las importantes.
   // Inicializamos 'showAll' como true, lo que significa que se mostrarán todas las notas al principio.
-  const [showAll, setShowAll] = useState(true) 
+  const [showAll, setShowAll] = useState(true)
+  const [errorMessage, setErrorMessage] = useState('some error happened...')
 
   const toggleImportanceOf = (id) =>{
     const note = notes.find(n => n.id === id)
@@ -32,8 +46,13 @@ const App = () => {
     .then(returnedNote =>{
       setNotes(notes.map(note => note.id !== id ? note : returnedNote))
     })
-    .catch(() => {
-      alert(`the note ${note.content} was alredy deleted from serever`)
+    .catch(error => {
+      setErrorMessage(
+        `Note ${note.content} was already deleted from server`
+      )
+      setTimeout(()=>{
+        setErrorMessage(null)
+      }, 5000)
       setNotes(notes.filter(n => n.id !== id))
     })
       
@@ -75,7 +94,7 @@ const App = () => {
   return (
     <div>
       <h1>Notes</h1> {/* Título de la aplicación */}
-
+      <Notification message={errorMessage}/>
       <div>
         {/* Botón para alternar entre mostrar todas las notas o solo las importantes */}
         <button onClick={()=> setShowAll(!showAll)}>show {showAll ? 'important':'all'}</button> 
@@ -99,7 +118,8 @@ const App = () => {
         onChange={handleNoteChange} // Se llama a la función 'handleNoteChange' cada vez que el valor del input cambia.
         />
         <button type="submit">save</button> {/* Botón para enviar el formulario */}
-      </form>   
+      </form>
+      <Footer/>   
     </div>
   )
 }
