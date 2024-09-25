@@ -40,7 +40,7 @@ const PersonForm = ({newName, setNewName, newNumber, setNewNumber, persons, setP
             setPersons(persons.map(person => person.name != newName ? person : returnedPerson))
           })
           .catch(
-            error =>{
+            () =>{
               setNewMessage(
                 `Information of ${persons.find(person=> person.name === newName).name} has already been removed from server`
               )

@@ -13,10 +13,11 @@ const Persons = ({persons, filterNames, setPersons, setNewMessage, setNewStatusM
         .then(() => {
           setPersons(persons.filter(person => person.id !== id));
         })
-        .catch((error) => {
-          setNewMessage(
-            `${persons.find(p => p.id === id).name} was already deleted from the server.`
-          )
+        .catch(
+          () => {
+            setNewMessage(
+              `${persons.find(p => p.id === id).name} was already deleted from the server.`
+            )
           setNewStatusMessage('error')
           setPersons(persons.filter(n => n.id !== id));
         });
