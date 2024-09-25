@@ -1,6 +1,6 @@
 import personsServices from '../services/persons'
 
-const Persons = ({persons, filterNames, setPersons}) =>{
+const Persons = ({persons, filterNames, setPersons, setNewMessage, setNewStatusMessage}) =>{
 
   let personsFilterList = persons.filter(person => person.name.toLowerCase().includes(filterNames) ? <h3>{person.name}</h3> : '')
   // console.log(filterNames)
@@ -13,8 +13,11 @@ const Persons = ({persons, filterNames, setPersons}) =>{
         .then(() => {
           setPersons(persons.filter(person => person.id !== id));
         })
-        .catch(() => {
-          alert(`The person was already deleted from the server.`);
+        .catch((error) => {
+          setNewMessage(
+            `${persons.find(p => p.id === id).name} was already deleted from the server.`
+          )
+          setNewStatusMessage('error')
           setPersons(persons.filter(n => n.id !== id));
         });
     }

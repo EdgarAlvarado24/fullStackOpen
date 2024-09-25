@@ -10,7 +10,8 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterNames, setFilterNames] = useState([])
-  const [newMessage, setNewMessage] = useState('agregado')
+  const [newMessage, setNewMessage] = useState(null)
+  const [newStatusMessage, setNewStatusMessage] = useState('')
 
   useEffect(()=>{
     personsService
@@ -23,12 +24,12 @@ const App = () => {
   return (
   <div>
     <h2>Phonebook</h2>
-    <Notification message={newMessage}/>
+    <Notification message={newMessage} status={newStatusMessage}/>
     <Filter  filterNames={filterNames} setFilterNames={setFilterNames} />
     <h3>Add a new</h3>
-    <PersonForm newName={newName} setNewName={setNewName} newNumber={newNumber} setNewNumber={setNewNumber} persons={persons} setPersons={setPersons} setNewMessage={setNewMessage}/>
+    <PersonForm newName={newName} setNewName={setNewName} newNumber={newNumber} setNewNumber={setNewNumber} persons={persons} setPersons={setPersons} setNewMessage={setNewMessage} setNewStatusMessage={setNewStatusMessage}/>
     <h2>Numbers</h2>
-    <Persons persons={persons} filterNames={filterNames} setPersons={setPersons}/>
+    <Persons persons={persons} filterNames={filterNames} setPersons={setPersons} setNewMessage={setNewMessage} setNewStatusMessage={setNewStatusMessage} />
     </div>
   )
 }

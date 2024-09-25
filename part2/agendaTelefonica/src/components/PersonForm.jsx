@@ -1,6 +1,6 @@
 import personsServices from '../services/persons'
 
-const PersonForm = ({newName, setNewName, newNumber, setNewNumber, persons, setPersons, setNewMessage}) =>{
+const PersonForm = ({newName, setNewName, newNumber, setNewNumber, persons, setPersons, setNewMessage, setNewStatusMessage}) =>{
 
     const addPerson = (event) =>{
         event.preventDefault()
@@ -24,6 +24,7 @@ const PersonForm = ({newName, setNewName, newNumber, setNewNumber, persons, setP
               setNewMessage(
                 `agregado ${newName}`
               )
+              setNewStatusMessage('add')
             },
             setTimeout(()=>{
                   setNewMessage(null)
@@ -38,6 +39,17 @@ const PersonForm = ({newName, setNewName, newNumber, setNewNumber, persons, setP
           .then(returnedPerson =>{
             setPersons(persons.map(person => person.name != newName ? person : returnedPerson))
           })
+          .catch(
+            error =>{
+              setNewMessage(
+                `Information of ${persons.find(person=> person.name === newName).name} has already been removed from server`
+              )
+              setNewStatusMessage('error')
+              setTimeout(()=>{
+                setNewMessage(null)
+              },3000)
+            }
+          )
           
         }
         setNewName('')
