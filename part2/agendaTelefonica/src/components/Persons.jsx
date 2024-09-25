@@ -18,6 +18,9 @@ const Persons = ({persons, filterNames, setPersons, setNewMessage, setNewStatusM
             setNewMessage(
               `${persons.find(p => p.id === id).name} was already deleted from the server.`
             )
+          setTimeout(()=>{
+            setNewMessage(null)
+          },3000)
           setNewStatusMessage('error')
           setPersons(persons.filter(n => n.id !== id));
         });
