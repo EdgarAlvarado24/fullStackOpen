@@ -1,10 +1,4 @@
-const CountryList = ({countries, findcountry, setFindCountry}) =>{
-
-    const handleFindCountry = (event) =>{
-        // console.log(event.target.value)
-        setFindCountry(event.target.value)
-        
-    }
+const CountryList = ({countries, findcountry}) =>{
 
     if(countries.length != 0){
         let listOfCountries = countries.map(country =>country.name.common)
@@ -15,7 +9,6 @@ const CountryList = ({countries, findcountry, setFindCountry}) =>{
   
             return (
               <div>
-                  <p>find countries:<input onChange={handleFindCountry}/></p>
                   <p></p>
               </div>
             )
@@ -24,7 +17,6 @@ const CountryList = ({countries, findcountry, setFindCountry}) =>{
         
             return (
               <div>
-                  <p>find countries:<input onChange={handleFindCountry}/></p>
                   {countriesMatch.map((country, index)=> <p key={index}> {country}</p>)}
               </div>
             )
@@ -32,7 +24,6 @@ const CountryList = ({countries, findcountry, setFindCountry}) =>{
           }else if(countriesMatch.length > 10){
             return (
               <div>
-                  <p>find countries:<input onChange={handleFindCountry}/></p>
                   <p>Too many matches, specify another filter</p>
               </div>
             )

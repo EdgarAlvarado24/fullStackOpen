@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import serviceCountry from './services/countries'
-import CountryList from "./components/countryList";
+import FindCountryComponent from "./components/FindCountryComponent";
+import ListFiltersCountries from "./components/ListFiltersCountries";
 
 
 const App = () => {
@@ -15,14 +16,16 @@ const App = () => {
       .getAll()
       .then(response => {
         setCountries(response)
-        // console.log(countries)
     })  
   },[])
 
 
   return(
     <div>
-      <CountryList countries={countries} findcountry={findcountry} setFindCountry={setFindCountry}/>
+      <FindCountryComponent setFindCountry={setFindCountry}/>
+      {countries.length > 0 &&(
+      <ListFiltersCountries countries={countries} findcountry={findcountry}/>
+      )}
     </div>
   )
 
