@@ -1,13 +1,12 @@
 const express = require('express')
 const fs = require('fs')
 const  bodyParser = require('body-parser')
-
-const app = express()
-app.use(bodyParser.json());
-const PORT = process.env.PORT || 3001
-
 const cors = require('cors')
 
+const app = express()
+const PORT = process.env.PORT || 3001
+
+app.use(bodyParser.json());
 app.use(cors())
 app.use(express.static('dist'))
 
