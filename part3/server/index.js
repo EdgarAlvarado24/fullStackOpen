@@ -1,10 +1,14 @@
-import fs from 'fs'
-import express from 'express'
-import bodyParser from 'body-parser'
+const express = require('express')
+const fs = require('fs')
+const  bodyParser = require('body-parser')
 
 const app = express()
 app.use(bodyParser.json());
-const PORT = 3001
+const PORT = process.env.PORT || 3001
+
+const cors = require('cors')
+
+app.use(cors())
 
 const readData = () => {
   try{
@@ -31,19 +35,19 @@ app.get('/', (req, res)=>{
   res.send('Welcome to my fisrt Api Rest')
 })
 
-app.get('/notes', (req, res)=>{
+app.get('/api/notes', (req, res)=>{
   const data = readData()
   res.send(data.notes)
 })
 
-app.get('/notes/:id', (req, res)=>{
+app.get('/api/notes/:id', (req, res)=>{
   const data = readData()
   const id = req.params.id
   const note = data.notes.filter(note => note.id == id ? note : '')
   res.send(note)
 })
 
-app.post('/notes', (req, res) =>{
+app.post('/api/notes', (req, res) =>{
   const data = readData();
   const body = req.body;
   const newNote = {
@@ -56,7 +60,7 @@ app.post('/notes', (req, res) =>{
   res.json(newNote)
 })
 
-app.put('/notes/:id', (req, res) =>{
+app.put('/api/notes/:id', (req, res) =>{
   const data = readData();
   const body = req.body;
   const id = Number(req.params.id)
@@ -69,7 +73,7 @@ app.put('/notes/:id', (req, res) =>{
   res.json({message: "note updated successfully"})
 })
 
-app.delete('/notes/:id', (req, res) =>{
+app.delete('/api/notes/:id', (req, res) =>{
   const data = readData();
   const id = Number(req.params.id)
   const noteIndex = data.notes.findIndex((note) => note.id == id)
