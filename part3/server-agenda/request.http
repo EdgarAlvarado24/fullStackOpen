@@ -1,0 +1,18 @@
+POST http://localhost:3001/api/persons HTTP/1.1
+Content-Type:  application/json
+
+{
+    "name":"Edgar Alvarado",
+    "number":"414-514-5068"
+}
+
+###
+PUT http://localhost:3001/api/persons/5 HTTP/1.1
+Content-Type: application/json
+
+{
+    "number":"00-000-0000"
+}
+
+###
+DELETE http://localhost:3001/api/persons/5 HTTP/1.1
