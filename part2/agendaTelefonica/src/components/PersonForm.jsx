@@ -6,8 +6,8 @@ const PersonForm = ({newName, setNewName, newNumber, setNewNumber, persons, setP
         event.preventDefault()
     
         const personObject = {
-          number: newNumber,
-          name: newName
+          name: newName,
+          number: newNumber
         }
 
         const personsExist = persons.some((person) => person.name === newName)
