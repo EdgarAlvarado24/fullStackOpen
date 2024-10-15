@@ -1,29 +1,31 @@
+require('dotenv').config()
 const express = require('express')
 const fs = require('fs')
 const cors = require('cors')
 const app = express()
-const PORT = process.env.PORT|| 3001
+const PORT = process.env.PORT
+const Person = require('./models/agenda') 
 
+app.use(express.static('dist'))
 app.use(express.json())
 app.use(cors())
-app.use(express.static('dist'))
 
-const readData = () =>{
-    try{
-        const data = JSON.parse(fs.readFileSync('db.json'))
-        return data
-    }catch(error){
-        console.log(error)
-    }
-}
+// const readData = () =>{
+//     try{
+//         const data = JSON.parse(fs.readFileSync('db.json'))
+//         return data
+//     }catch(error){
+//         console.log(error)
+//     }
+// }
 
-const writeData = (data) =>{
-    try {
-        fs.writeFileSync('db.json',JSON.stringify(data))
-    } catch (error) {
-        console.log(error)
-    }
-}
+// const writeData = (data) =>{
+//     try {
+//         fs.writeFileSync('db.json',JSON.stringify(data))
+//     } catch (error) {
+//         console.log(error)
+//     }
+// }
 
 app.listen(PORT, ()=>{
     console.log(`App is runing in ${PORT}`)
@@ -36,56 +38,83 @@ app.get('/', (request, response) =>{
 
 
 app.get('/api/persons', (request, response) =>{
-    const data = readData();
-    response.send(data)
+    Person.find({}).then( people =>{
+        response.json(people)
+    })
 })
 
 
-app.get('/api/persons/:id', (request, response) =>{
-    const data = readData()
-    const id = Number(request.params.id)
-    const personById = data.persons.filter((person)=>{
-        return person.id == id
-    })
-    response.send(personById)
+app.get('/api/persons/:id', (request, response, next) =>{
+    Person.findById(request.params.id)
+        .then(people => {
+            if(people){
+                response.json(people)
+            }else{
+                resposne.status(400).end()
+            }
+        })
+        .catch(error => next(error))
 })
 
 app.post('/api/persons', (request, response) =>{
-    const data = readData()
     const body = request.body
-    const newPerson = {
-        ...body,
-        id:String(data.persons.length + 1),
+
+    if(body.name === undefined){
+        response.status(400).json({error: "name missing"})
+    }else if(body.number === undefined){
+        response.status(400).json({error: "number missing"})
     }
-    data.persons.push(newPerson)
-    writeData(data)
-    response.send(newPerson)
+
+    const newPerson = new Person({
+        name: body.name,
+        number: body.number,
+    })
+
+    newPerson.save().then( people=> {
+        response.json(people)
+    })
 })
 
 
 app.put('/api/persons/:id',(request, response) =>{
-    const id = request.params.id
-    const data = readData()
     const body = request.body
 
-    const personIndex = data.persons.findIndex((person) => person.id === id)
-
-    data.persons[personIndex] = {
-        ...data.persons[personIndex],
-        ...body
+    const person = {
+        name : body.name,
+        number : body.number,
     }
-    writeData(data)
 
-    response.send(data.persons[personIndex])
+    person.save()
+    .then(updatedPerson =>{
+        response.json(updatedPerson)
+    })
+    .catch(error => next(error))
 })
 
 app.delete('/api/persons/:id',(request, response)=>{
-    const id = Number(request.params.id)
-    const data = readData()
-    const personIndex = data.persons.findIndex(person => person.id === id)
-
-    data.persons.splice(personIndex, 1)
-    writeData(data)
-    response.send({message:"delete person successfully"})
-
+    Person.findByIdAndDelete(request.params.id)
+    .then(result =>{
+        response.status(204).end()
+    })
+    .catch(error =>next(error))
 })
+
+const unknownEndpoint = (request, response) => {
+    response.status(404).send({ error: 'unknown endpoint' })
+  }
+  
+  // controlador de solicitudes con endpoint desconocido
+  app.use(unknownEndpoint)
+
+const errorHandler = (error, request, response, next) => {
+    console.error(error.message)
+  
+    if (error.name === 'CastError') {
+      return response.status(400).send({ error: 'malformatted id' })
+    } 
+  
+    next(error)
+  }
+  
+  // este debe ser el último middleware cargado, ¡también todas las rutas deben ser registrada antes que esto!
+  app.use(errorHandler)
