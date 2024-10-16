@@ -14,23 +14,27 @@ const PersonForm = ({newName, setNewName, newNumber, setNewNumber, persons, setP
         console.log('personsDontExist',!personsExist)
         if (!personsExist){
           setPersons(persons.concat(personObject))
-
           personsServices
           .create(personObject)
+          .then(response => {
+            console.log('response',response)
+          })
           .then(returnedPerson =>{
             setPersons(persons.concat(returnedPerson))
-          })
-          .finally( ()=>{
-              setNewMessage(
-                `agregado ${newName}`
-              )
-              setNewStatusMessage('add')
-            },
+            setNewMessage(`agregado ${newName}`)
+            setNewStatusMessage('add')
             setTimeout(()=>{
                   setNewMessage(null)
-              },3000)
+            },3000)
+          })
+          .catch(response => 
+            setNewMessage(response.toString()),
+            setTimeout(()=>{
+              setNewMessage(null)
+            },3000),
+            setPersons(persons.filter(person => person.name != personObject.name ? person : ''))
           )
-          
+
         }else{
           // alert(`${newName} is already added to phonebook`)
           if (window.confirm(`${persons.find(person=> person.name === newName).name } ya existe, quieres cambiar el numero?`))
