@@ -1,5 +1,5 @@
 import axios from 'axios';
-const baseUrl = 'http://localhost:3001/api/persons'
+const baseUrl = '/api/persons'
 
 const getAll = () =>{
     const request = axios.get(baseUrl)
@@ -12,7 +12,7 @@ const create = async (newObject) =>{
         return response.data
     }catch(error){
         if(error.response && error.response.status === 400){
-            throw new Error(error.response.data.error || 'BAD FUCKING REQUEST')
+            throw error.response.data.error || 'BAD FUCKING REQUEST'
         }else{
             console.error('Unexpected Error:', error)
 

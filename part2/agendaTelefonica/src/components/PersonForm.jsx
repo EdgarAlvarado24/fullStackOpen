@@ -31,7 +31,7 @@ const PersonForm = ({newName, setNewName, newNumber, setNewNumber, persons, setP
             setNewMessage(response.toString()),
             setTimeout(()=>{
               setNewMessage(null)
-            },3000),
+            },5000),
             setPersons(persons.filter(person => person.name != personObject.name ? person : ''))
           )
 
