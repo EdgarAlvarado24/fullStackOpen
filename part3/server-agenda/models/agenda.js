@@ -13,12 +13,24 @@ mongoose.connect(url)
   .catch(error => 
     console.error('Error connecting to MongoDB Atlas:',error));
 
+const formatValid = [
+  {validator: (format) => /\d{2}-\d{2}-\d{6}/.test(format)},
+  {validator: (format) => /\d{3}-\d{8}/.test(format)},
+  {validator: (format) => /\d{2}-\d{7}/.test(format)},
+  {validator: (format) => /\d{1}-\d{8}/.test(format)},
+  {validator: (format) => /\d{8}/.test(format)},
+]
+
  const personSchema = new mongoose.Schema({
     name: {
       type: String,
       minLength: 3,
     },
-    number: String,
+    number: {
+      type: String,
+      minLength: 8,
+      validate: formatValid
+    },
 })
 
 personSchema.set('toJSON', {
