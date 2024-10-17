@@ -1,0 +1,14 @@
+GET http://localhost:3003/api/blogs HTTP/1.1
+
+###
+POST http://localhost:3003/api/blogs HTTP/1.1
+Content-Type: application/json
+
+{
+    "title":"El maravilloso mundo de gumball",
+    "author":"Accion Men",
+    "url":"www.elmaravillosomundodegumball.com",
+    "likes": 9000
+}
+
+###
