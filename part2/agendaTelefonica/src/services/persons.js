@@ -1,14 +1,24 @@
 import axios from 'axios';
-const baseUrl = 'http://localhost:3001/persons'
+const baseUrl = '/api/persons'
 
 const getAll = () =>{
     const request = axios.get(baseUrl)
     return request.then(response => response.data)
 }
 
-const create = newObject =>{
-    const request = axios.post(baseUrl, newObject)
-    return request.then(response => response.data)
+const create = async (newObject) =>{
+    try{
+        const response = await axios.post(baseUrl, newObject)
+        return response.data
+    }catch(error){
+        if(error.response && error.response.status === 400){
+            throw error.response.data.error || 'BAD FUCKING REQUEST'
+        }else{
+            console.error('Unexpected Error:', error)
+
+            throw error;
+        }
+    }
 }
 
 const remove = (id) =>{

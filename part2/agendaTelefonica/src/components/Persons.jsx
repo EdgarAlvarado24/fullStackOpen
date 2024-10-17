@@ -28,7 +28,7 @@ const Persons = ({persons, filterNames, setPersons, setNewMessage, setNewStatusM
   };
   
   return(
-        <div>
+      <div>
         {
           personsFilterList.map((filter)=> 
             <h3 key={filter.id}>

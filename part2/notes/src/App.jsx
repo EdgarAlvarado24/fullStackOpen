@@ -35,7 +35,7 @@ const App = () => {
   // Creamos un estado llamado 'showAll' para controlar si se muestran todas las notas o solo las importantes.
   // Inicializamos 'showAll' como true, lo que significa que se mostrarán todas las notas al principio.
   const [showAll, setShowAll] = useState(true)
-  const [errorMessage, setErrorMessage] = useState('some error happened...')
+  const [errorMessage, setErrorMessage] = useState(null)
 
   const toggleImportanceOf = (id) =>{
     const note = notes.find(n => n.id === id)
@@ -48,7 +48,7 @@ const App = () => {
     })
     .catch(error => {
       setErrorMessage(
-        `Note ${note.content} was already deleted from server`
+        `Note ${note.content} was already romoved from server`
       )
       setTimeout(()=>{
         setErrorMessage(null)

@@ -1,0 +1,16 @@
+{
+  "notes": [
+    { "id": 1, "content": "HTML is easy", "important": false },
+    {
+      "id": 2,
+      "content": "Browser can execute only JavaScript",
+      "important": false
+    },
+    {
+      "id": 3,
+      "content": "Esta Nota es Vieja pero Actualizada",
+      "important": true
+    },
+    { "id": 4, "content": "Esta Nota es Nueva", "important": true }
+  ]
+}
